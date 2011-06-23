@@ -2666,3 +2666,8 @@ p.comment-form-comment {
 	.singular .entry-title {
 		margin-left: 15.5%;
 	}
+
+	.printfooter {
+		visibility: hidden;
+		display: none;
+	}

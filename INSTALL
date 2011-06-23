@@ -1,0 +1,7 @@
+Usual Mediawiki skin installation, just drop the .php files
+and the twentyeleven directory under your skin/ directory
+and then edit your LocalSettings.php and change/add:
+
+$wgDefaultSkin = "twentyeleven";
+
+And that's it.

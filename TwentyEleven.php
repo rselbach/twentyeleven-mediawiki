@@ -89,7 +89,7 @@ default: ?>
 <head>
 <meta charset="<?php $this->text('charset');?>" />
 <meta name="viewport" content="width=device-width" />
-<title><?php echo $this->text('sitename') ?></title>
+<title><?php $this->text('title'); echo ' | '; $this->text('sitename'); ?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php $this->text('stylepath') ?>/twentyeleven/twentyeleven.css" />
 

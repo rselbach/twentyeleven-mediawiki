@@ -21,14 +21,14 @@ class SkinTwentyEleven extends SkinTemplate {
 		global $wgHandheldStyle;
 
 		parent::setupSkinUserCss( $out );
-
+$out->addMeta('teste', 'teste');
 		$out->addStyle( 'twentyeleven/twentyeleven.css', 'screen' );
 		$out->addStyle( 'twentyeleven/rtl.css',       'screen', '', 'rtl' );
 		$out->addStyle( 'twentyeleven/main.css',      'screen' );
-	$out->addHeadItem( 'teste', '<link rel="openid2.provider" href="http://robteix.com/br/blog/index.php/openid/server" /> 
-			<link rel="openid2.local_id" href="http://robteix.com/br/blog/author/robteix/" /> 
-			<link rel="openid.server" href="http://robteix.com/br/blog/index.php/openid/server" /> 
-			<link rel="openid.delegate" href="http://robteix.com/br/blog/author/robteix/" />
+	$out->addHeadItem( 'teste', '<link rel="openid2.provider" href="http://robteix.com/blog/index.php/openid/server" /> 
+			<link rel="openid2.local_id" href="http://robteix.com/blog/author/robteix/" /> 
+			<link rel="openid.server" href="http://robteix.com/blog/index.php/openid/server" /> 
+			<link rel="openid.delegate" href="http://robteix.com/blog/author/robteix/" />
 <link href=\'http://fonts.googleapis.com/css?family=Permanent+Marker\' rel=\'stylesheet\' type=\'text/css\'>
 <link href=\'http://fonts.googleapis.com/css?family=Lato:regular,regularitalic,bold,bolditalic\' rel=\'stylesheet\' type=\'text/css\'/>' ); 
 	}
@@ -59,67 +59,8 @@ class TwentyElevenTemplate extends QuickTemplate {
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
 
-		//$this->html( 'headelement' );
+		$this->html( 'headelement' );
 ?>
-<!DOCTYPE html>
-<?php
-$browscap = get_browser(null, true);
-if ($browscap['browser'] == 'IE') {
-	switch($browscap['majorver']) {
-	case "6":?>
-		<html id="ie6" lang="<?php $this->text('lang'); ?>">
-<?php break;
-case "7": ?>
-	<html id="ie7" lang="<?php $this->text('lang'); ?>">
-<?php
-break;
-case "8": ?>
-<html id="ie8" lang="<?php  $this->text('lang'); ?>">
-<?php
-break;
-default: ?>
-	<html lang="<?php $this->text('lang'); ?>">
-<?php
-	}
-} else {
-	echo '<html lang="'; $this->text('lang'); echo '">';
-}
-?>
-
-<head>
-<meta charset="<?php $this->text('charset');?>" />
-<meta name="viewport" content="width=device-width" />
-<title><?php $this->text('title'); echo ' | '; $this->text('sitename'); ?></title>
-<link rel="profile" href="http://gmpg.org/xfn/11" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php $this->text('stylepath') ?>/twentyeleven/twentyeleven.css" />
-
-<link rel="meta" type="application/rdf+xml" title="FOAF" href="/foaf.rdf"/>
-
-<link rel="shortcut icon" href="/favicon.ico"/>
-
-<link rel="icon" href="/favicon.ico"/>
-
-<link rel="me" type="text/html" href="http://profiles.google.com/robteix"/>
-
-<link rel="me" type="text/html" href="https://profiles.google.com/robteix"/>
-
-<link rel="me" type="text/html" href="http://facebook.com/robteix"/>
-
-<link rel="me" type="text/html" href="http://twitter.com/robteix"/>
-
-<meta name="author" content="Roberto Teixeira"/>
-
-<meta property="fb:admins" content="robteix"/>
-
-<meta property="fb:app_id" content="147141155357219">
-
-<?php
-if (($browscap['browser'] == "IE") && ($browscap['majorver'] != "9")) { ?>
-<script src="<?php echo $this->text('stylepath'); ?>/js/html5.js" type="text/javascript"></script>
-<?php } ?>
-</head>
-
-<body class="single singular single-post single-format-standard two-column content-sidebar">
 <div id="page" class="hfeed">
 <div id="wrapper">
 	<header id="branding" role="banner">
@@ -133,7 +74,9 @@ if (($browscap['browser'] == "IE") && ($browscap['majorver'] != "9")) { ?>
 			</hgroup>
 
 			 <?php $headerSrc = (isset($wgTwentyElevenHeader)) ? $wgTwentyElevenHeader : "$wgStylePath/twentyeleven/headers/path.jpg" ?>
-			 <img src="<?php echo $headerSrc ?>" alt="Header image" />
+			<?php if (isset($wgTwentyElevenHeader)) { ?>
+			 <img src="<?php echo $wgTwentyElevenHeader ?>" alt="Header image" />
+			<?php } ?>
 			<!-- ?php et_search_form(); ?> -->
 <!--<form method="get" id="searchform" action="https://robteix.com/"> 
 		<label for="s" class="assistive-text">Search</label> 
@@ -223,7 +166,7 @@ if (($browscap['browser'] == "IE") && ($browscap['majorver'] != "9")) { ?>
 				 	&& in_array( $key, array( 'edit', 'watch', 'unwatch' ))) {
 				 		echo $skin->tooltip( "ca-$key" );
 				 	} else {
-				 		echo $skin->tooltipAndAccesskey( "ca-$key" );
+				 		echo $skin->tooltipAndAccesskeyAttribs( "ca-$key" );
 				 	}
 				 	echo '>'.htmlspecialchars($tab['text']).'</a></li>';
 				} ?>
@@ -241,7 +184,7 @@ if (($browscap['browser'] == "IE") && ($browscap['majorver'] != "9")) { ?>
 					<?php foreach($this->data['personal_urls'] as $key => $item) { ?>
 						<li id="<?php echo Sanitizer::escapeId( "pt-$key" ) ?>"<?php
 						if ($item['active']) { ?> class="active"<?php } ?>><a href="<?php
-						echo htmlspecialchars($item['href']) ?>"<?php echo $skin->tooltipAndAccesskey('pt-'.$key) ?><?php
+						echo htmlspecialchars($item['href']) ?>"<?php echo $skin->tooltipAndAccesskeyAttribs('pt-'.$key) ?><?php
 						if(!empty($item['class'])) { ?> class="<?php
 						echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
 						echo htmlspecialchars($item['text']) ?></a></li>
@@ -305,7 +248,7 @@ Copyright &copy; 2007-2011, Roberto Teixeira. All rights reserved.
 			) ); ?>
 
 				<input type='submit' name="go" class="searchButton" id="searchGoButton"
-				value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-go' ); ?> />
+				value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskeyAttribs( 'search-go' ); ?> />
 
 			</form>
 	</li>
@@ -316,7 +259,7 @@ Copyright &copy; 2007-2011, Roberto Teixeira. All rights reserved.
 		?>
 		<li class="widget-container logo">
 			<a href="<?php echo htmlspecialchars($this->data['nav_urls']['mainpage']['href'])?>"<?php
-			echo $this->skin->tooltipAndAccesskey('p-logo') ?>>
+			echo $this->skin->tooltipAndAccesskeyAttribs('p-logo') ?>>
 				<img src="<?php $this->text('logopath') ?>" alt="Site Logo" />
 			</a>
 		</li>
@@ -328,23 +271,23 @@ Copyright &copy; 2007-2011, Roberto Teixeira. All rights reserved.
 		if($this->data['notspecialpage']) { ?>
 				<li id="t-whatlinkshere"><a href="<?php
 				echo htmlspecialchars($this->data['nav_urls']['whatlinkshere']['href'])
-				?>"<?php echo $this->skin->tooltipAndAccesskey('t-whatlinkshere') ?>><?php $this->msg('whatlinkshere') ?></a></li>
+				?>"<?php echo $this->skin->tooltipAndAccesskeyAttribs('t-whatlinkshere') ?>><?php $this->msg('whatlinkshere') ?></a></li>
 <?php
 			if( $this->data['nav_urls']['recentchangeslinked'] ) { ?>
 				<li id="t-recentchangeslinked"><a href="<?php
 				echo htmlspecialchars($this->data['nav_urls']['recentchangeslinked']['href'])
-				?>"<?php echo $this->skin->tooltipAndAccesskey('t-recentchangeslinked') ?>><?php $this->msg('recentchangeslinked-toolbox') ?></a></li>
+				?>"<?php echo $this->skin->tooltipAndAccesskeyAttribs('t-recentchangeslinked') ?>><?php $this->msg('recentchangeslinked-toolbox') ?></a></li>
 <?php 		}
 		}
 		if( isset( $this->data['nav_urls']['trackbacklink'] ) && $this->data['nav_urls']['trackbacklink'] ) { ?>
 			<li id="t-trackbacklink"><a href="<?php
 				echo htmlspecialchars($this->data['nav_urls']['trackbacklink']['href'])
-				?>"<?php echo $this->skin->tooltipAndAccesskey('t-trackbacklink') ?>><?php $this->msg('trackbacklink') ?></a></li>
+				?>"<?php echo $this->skin->tooltipAndAccesskeyAttribs('t-trackbacklink') ?>><?php $this->msg('trackbacklink') ?></a></li>
 <?php 	}
 		if($this->data['feeds']) { ?>
 			<li id="feedlinks"><?php foreach($this->data['feeds'] as $key => $feed) {
 					?><a id="<?php echo Sanitizer::escapeId( "feed-$key" ) ?>" href="<?php
-					echo htmlspecialchars($feed['href']) ?>" rel="alternate" type="application/<?php echo $key ?>+xml" class="feedlink"<?php echo $this->skin->tooltipAndAccesskey('feed-'.$key) ?>><?php echo htmlspecialchars($feed['text'])?></a>&nbsp;
+					echo htmlspecialchars($feed['href']) ?>" rel="alternate" type="application/<?php echo $key ?>+xml" class="feedlink"<?php echo $this->skin->tooltipAndAccesskeyAttribs('feed-'.$key) ?>><?php echo htmlspecialchars($feed['text'])?></a>&nbsp;
 					<?php } ?></li><?php
 		}
 
@@ -352,18 +295,18 @@ Copyright &copy; 2007-2011, Roberto Teixeira. All rights reserved.
 
 			if($this->data['nav_urls'][$special]) {
 				?><li id="t-<?php echo $special ?>"><a href="<?php echo htmlspecialchars($this->data['nav_urls'][$special]['href'])
-				?>"<?php echo $this->skin->tooltipAndAccesskey('t-'.$special) ?>><?php $this->msg($special) ?></a></li>
+				?>"<?php echo $this->skin->tooltipAndAccesskeyAttribs('t-'.$special) ?>><?php $this->msg($special) ?></a></li>
 <?php		}
 		}
 
 		if(!empty($this->data['nav_urls']['print']['href'])) { ?>
 				<li id="t-print"><a href="<?php echo htmlspecialchars($this->data['nav_urls']['print']['href'])
-				?>" rel="alternate"<?php echo $this->skin->tooltipAndAccesskey('t-print') ?>><?php $this->msg('printableversion') ?></a></li><?php
+				?>" rel="alternate"<?php echo $this->skin->tooltipAndAccesskeyAttribs('t-print') ?>><?php $this->msg('printableversion') ?></a></li><?php
 		}
 
 		if(!empty($this->data['nav_urls']['permalink']['href'])) { ?>
 				<li id="t-permalink"><a href="<?php echo htmlspecialchars($this->data['nav_urls']['permalink']['href'])
-				?>"<?php echo $this->skin->tooltipAndAccesskey('t-permalink') ?>><?php $this->msg('permalink') ?></a></li><?php
+				?>"<?php echo $this->skin->tooltipAndAccesskeyAttribs('t-permalink') ?>><?php $this->msg('permalink') ?></a></li><?php
 		} elseif ($this->data['nav_urls']['permalink']['href'] === '') { ?>
 				<li id="t-ispermalink"<?php echo $this->skin->tooltip('t-ispermalink') ?>><?php $this->msg('permalink') ?></li><?php
 		}
@@ -402,7 +345,7 @@ Copyright &copy; 2007-2011, Roberto Teixeira. All rights reserved.
 			<ul>
 <?php 			foreach($cont as $key => $val) { ?>
 				<li id="<?php echo Sanitizer::escapeId($val['id']) ?>"<?php if ( $val['active'] ) { ?> class="active" <?php }
-				?>><a href="<?php echo htmlspecialchars($val['href']) ?>"<?php echo $this->skin->tooltipAndAccesskey($val['id']) ?>>
+				?>><a href="<?php echo htmlspecialchars($val['href']) ?>"<?php echo $this->skin->tooltipAndAccesskeyAttribs($val['id']) ?>>
 					<?php echo htmlspecialchars($val['text']) ?></a>
 				</li>
 <?php			} ?>
